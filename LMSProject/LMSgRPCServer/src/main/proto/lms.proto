@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.lms.grpc";
+option java_outer_classname = "Lms";
+
+import "google/protobuf/empty.proto";
+
+message User {
+  uint32 studentID = 1;
+  string name = 2;
+  string surname = 3;
+  string email = 4;
+  string password = 5;
+  string tel_number = 6;
+  string location = 7;
+  string department = 8;
+  UserType type = 9;
+}
+
+enum UserType {
+  USER = 0;
+  LIBRARIAN = 1;
+  ADMIN = 2;
+}
+
+message AddUserRequest {
+  uint32 loginID = 1;
+  User user = 2;
+}
+
+message AddUserResponse {
+  uint32 userID = 1;
+}
+
+message DeleteUserRequest {
+  uint32 loginID = 1;
+  uint32 userID = 2;
+}
+
+message ChangePasswordRequest {
+  uint32 loginID = 1;
+  string oldPassword = 2;
+  string newPassword = 3;
+}
+
+message UpdateContactInfoRequest {
+  uint32 loginID = 1;
+  string newTelNumber = 2;
+  string newLocation = 3;
+}
+
+message UpdateUserInfoRequest {
+  uint32 loginID = 1;
+  uint32 userID = 2;
+  User user = 3;
+}
+
+message GetUserInfoRequest {
+  uint32 loginID = 1;
+  uint32 userID = 2;
+}
+
+message GetUserInfoResponse {
+  User user = 1;
+}
+
+message IsLibrarianRequest {
+  uint32 loginID = 1;
+}
+
+message IsLibrarianResponse {
+  bool isLibrarian = 1;
+}
+
+message IsAdminRequest {
+  uint32 loginID = 1;
+}
+
+message IsAdminResponse {
+  bool isAdmin = 1;
+}
+
+message GenericResponse {
+  string message = 1;
+}
+
+message GetLoginIDRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message GetLoginIDResponse {
+  uint32 loginID = 1;
+  UserType type = 2;
+}
+
+message IsUserExistRequest {
+  uint32 loginID = 1;
+}
+
+message IsUserExistResponse {
+  bool isExist = 1;
+}
+
+message TranslateUserIdToStudentIdRequest {
+  uint32 userID = 1;
+}
+
+message TranslateUserIdToStudentIdResponse {
+  uint32 studentID = 1;
+}
+
+message TranslateStudentIdToUserIdRequest {
+  uint32 studentID = 1;
+}
+
+message TranslateStudentIdToUserIdResponse {
+  uint32 userID = 1;
+}
+
+service AdminService {
+  rpc AddUser(AddUserRequest) returns (AddUserResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (GenericResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (GenericResponse);
+  rpc UpdateContactInfo(UpdateContactInfoRequest) returns (GenericResponse);
+  rpc UpdateUserInfo(UpdateUserInfoRequest) returns (GenericResponse);
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
+  rpc IsLibrarian(IsLibrarianRequest) returns (IsLibrarianResponse);
+  rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
+  rpc GetLoginID(GetLoginIDRequest) returns (GetLoginIDResponse);
+  rpc IsUserExist(IsUserExistRequest) returns (IsUserExistResponse);
+  rpc TranslateUserIdToStudentId(TranslateUserIdToStudentIdRequest) returns (TranslateUserIdToStudentIdResponse);
+  rpc TranslateStudentIdToUserId(TranslateStudentIdToUserIdRequest) returns (TranslateStudentIdToUserIdResponse);
+}
